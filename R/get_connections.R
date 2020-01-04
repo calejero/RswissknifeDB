@@ -63,7 +63,7 @@ ClosePullConnectionDB <- function() {
   list.active.connections <- ls(db.pool.conn.env)
   cat("Active Pool Connections: ", length(list.active.connections), "\n")
   if (length(list.active.connections) > 0) {
-    for (i in 1:length(list.active.connections)) {
+    for (i in 1:seq_len(length(list.active.connections))) {
       active.con <- get(list.active.connections[i], db.pool.conn.env)
       pool::poolClose(active.con)
       remove(list = (list.active.connections[i]), envir = db.pool.conn.env)
@@ -83,7 +83,7 @@ CloseConnectionDB <- function() {
   list.active.connections <- ls(db.conn.env)
   cat("Active Connections: ", length(list.active.connections), "\n")
   if (length(list.active.connections) > 0) {
-    for (i in 1:length(list.active.connections)) {
+    for (i in 1:seq_len(length(list.active.connections))) {
       active.con <- get(list.active.connections[i], db.conn.env)
       RMariaDB::dbDisconnect(active.con)
       remove(list = (list.active.connections[i]), envir = db.conn.env)
