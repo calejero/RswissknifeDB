@@ -1,0 +1,2 @@
+DB_HOST;USER;PASS;PORT;DEFAULT;TYPE;platform;AVAILABLEPOOL
+localhost;jigsus;jigsus$mysql;3306;test;master;mysql;TRUE
