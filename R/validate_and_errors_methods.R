@@ -13,3 +13,19 @@ ValidateSlaveQuery <- function(query) {
     return(TRUE)
   }
 }
+
+ValidateInsertColumns <- function(data.df, db.table, db.name) {
+  query.df <- SelectByParamsDB("SELECT * FROM @param1", db.table, db.name)
+  query.df <- query.df[, colnames(query.df) %in% colnames(data.df), ]
+  result.df = data.frame(query = sapply(query.df, class), 
+                         data = sapply(data.df, class),
+                         stringsAsFactors = FALSE)
+  result.df$flag <- ifelse(result.df$query == result.df$data, 1, 0)
+  
+  if (min(result.df$flag) == 0) {
+    return(FALSE)
+  }
+  else{
+    return(TRUE)
+  }
+}

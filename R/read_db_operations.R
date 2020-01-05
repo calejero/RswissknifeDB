@@ -13,6 +13,7 @@ SelectByParamsDB <- function(query, params, database, slave = FALSE, is.pool = F
   
   query <- ParseParams(query, params)
   use.database <- dbSendQuery(con, paste("USE", database))
+  dbClearResult(use.database)
   query.con <- try(dbSendQuery(con, query))
   if (class(query.con) == 'try-error') {
     if (isTRUE(is.pool)) pool::poolReturn(con)
@@ -39,6 +40,7 @@ SelectDB <- function(query, database, slave = FALSE, is.pool = FALSE) {
   }
   
   use.database <- dbSendQuery(con, paste("USE", database))
+  dbClearResult(use.database)
   query.con <- try(dbSendQuery(con, query))
   if (class(query.con) == 'try-error') {
     if (isTRUE(is.pool)) pool::poolReturn(con)
