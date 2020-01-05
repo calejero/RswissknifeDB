@@ -110,11 +110,14 @@ GetDBConnection <- function(db.name, flag.write.operation) {
                                         error = function(e) return ("No DB connections availables for this database.")
                                     )
   
-  type.c <- ifelse(flag.write.operation == TRUE, "master", "slave")
   machine.df <- available.machines.df[available.machines.df$Database == database,]
   db.servers.list <- config_db[config_db$DB_HOST %in% machine.df$server & 
-                                config_db$platform %in% machine.df$platform &
-                                config_db$TYPE == type.c, ]
+                                config_db$platform %in% machine.df$platform, ]
+  
+  if (nrow(db.servers.list) > 1) {
+    type.c <- ifelse(flag.write.operation == TRUE, "master", "slave")
+    db.servers.list <- config_db[config_db$TYPE == type.c ]
+  } 
   
   con.name <- paste0("con_", as.character(db.servers.list$DB_HOST), "_",
                        as.character(db.servers.list$TYPE), collapse = '')
