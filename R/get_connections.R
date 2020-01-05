@@ -90,3 +90,33 @@ CloseConnectionDB <- function() {
     }
   }
 }
+
+
+
+#' @name GetDBConnection
+#' @title Get active connection
+#'
+#' @description This function obtains a connection from environment depends on database affected.
+#'
+#' @param db.name string identifying the database selected.
+#' @param flag.write.operation Boolean value. If it is true, method search a connection thats admits write operations
+#'
+#' @return None
+#'
+#' @export
+GetDBConnection <- function(db.name, flag.write.operation) {
+  available.machines.df <- tryCatch(
+                                    get("schemas.db", db.env), 
+                                        error = function(e) return ("No DB connections availables for this database.")
+                                    )
+  
+  type.c <- ifelse(flag.write.operation == TRUE, "master", "slave")
+  machine.df <- available.machines.df[available.machines.df$Database == database,]
+  db.servers.list <- config_db[config_db$DB_HOST %in% machine.df$server & 
+                                config_db$platform %in% machine.df$platform &
+                                config_db$TYPE == type.c, ]
+  
+  con.name <- paste0("con_", as.character(db.servers.list$DB_HOST), "_",
+                       as.character(db.servers.list$TYPE), collapse = '')
+  return(con.name)
+}
