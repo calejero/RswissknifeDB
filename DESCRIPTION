@@ -8,8 +8,8 @@ Maintainer: J A Calejero <jcalejero@gmail.com>
 Authors@R: 
     c(person(given = "Jesús Armand",
              family = "Calejero Román",
-             role = "aut",
-             email = "jcalejero@gmail.com")
+             role = c("aut", "cre"),
+             email = "jcalejero@gmail.com"))
 License: MIT License 
 Depends: RMariaDB
 Imports: RMariaDB, DBI, glue, rjson
