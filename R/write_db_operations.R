@@ -126,7 +126,7 @@ InsertByQueryDB <- function(query, db.name, is.pool = FALSE) {
 }
 
 InsertDB <- function(data, db.table, db.name) {
-  query <- CreateInsertHeader(data, db.table)
+  query <- GenerateInsertHeader(data, db.table)
   type.validation <- ValidateInsertColumns(data, db.table, db.name)
   if (type.validation == TRUE) {
     for (i in 1:nrow(data)) {
@@ -139,7 +139,7 @@ InsertDB <- function(data, db.table, db.name) {
       if (i < nrow(data) & i %% 500 != 0) query <- paste(query, ",", sep = "")
       if (i %% 500 == 0) {
         InsertByQueryDB(query, db.name)
-        query <- CreateInsertHeader(data, db.table)
+        query <- GenerateInsertHeader(data, db.table)
       }
       else if (i == nrow(data)) {
         InsertByQueryDB(query, db.name)
@@ -193,3 +193,46 @@ CreateTableByQueryDB <- function(tablename, db.name, query, is.pool = FALSE) {
   dbClearResult(res)
   if (isTRUE(is.pool)) pool::poolReturn(con)
 }  
+
+InsertByLoadDataDB <- function(data.df, db.table, db.name, cushion = 100000, is.pool = FALSE, ...) {
+  if (isTRUE(is.pool)) {
+    pool <- get(GetDBConnection(db.name, TRUE), db.pool.conn.env)
+    con <- pool::poolCheckout(pool)
+  } else {
+    con <- get(GetDBConnection(db.name, TRUE), db.conn.env)
+  }
+  
+  N <-  nrow(data.df)
+  index.inf <- 1
+  index.sup <- N
+  if (N > cushion) n <- ceiling(N / cushion)  else n <- 1
+  
+  autocommit.start <- dbSendStatement(con, "SET AUTOCOMMIT = 0;")
+  dbClearResult(autocommit.start)
+  
+  for (i in 1:n) {
+    # WRITE THE DATA TO A LOCAL FILE
+    TempCSV <- paste0(tempfile(fileext = '.csv', tmpdir = tempdir()))
+    index.sup <- ifelse(i != n, cushion * i, N)
+    write.table(data.df[index.inf:index.sup, ], TempCSV, row.names = FALSE, fileEncoding = 'UTF-8', sep = ';')
+    index.inf <- index.sup + 1
+    # SUBMIT THE UPDATE QUERY AND DISCONNECT
+    query  <-  sprintf(paste0(
+      "LOAD DATA LOCAL INFILE '%s' REPLACE INTO TABLE %s CHARACTER SET UTF8 FIELDS ",
+      "TERMINATED BY ';' ENCLOSED BY '", '"',"' ESCAPED BY '' LINES TERMINATED ",
+      "BY '\n' IGNORE 1 LINES"),
+      TempCSV, db.table
+    )
+    transaction.commit <- dbSendStatement(con, "START TRANSACTION;")
+    dbClearResult(transaction.commit)
+    transaction.query <- dbSendStatement(con, query)
+    dbClearResult(transaction.query)
+    transaction.commit <- dbSendStatement(con, "COMMIT;")
+    dbClearResult(transaction.commit)
+    # REMOVE THE TEMP DATA FROM LOCAL DIRECTORY
+    file.remove(TempCSV)
+  }
+  autocommit.end <- dbSendStatement(con, "SET AUTOCOMMIT = 1;")
+  dbClearResult(autocommit.end)
+  dbDisconnect(con)
+}
