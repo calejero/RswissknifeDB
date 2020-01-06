@@ -62,6 +62,7 @@ CloseConnectionDB()
 | `TruncateTableDB` | table, db.name | `TruncateTableDB("Persons", db.name = "test")`
 | `InsertByQueryDB` | query, db.name | `InsertByQueryDB("INSERT INTO Persons VALUES (2, 'Alberto', 'Gómez', 'Dirección 2', 'Zaragoza')", "test")`
 | `InsertDB` | data, db.table, db.name | data.df = data.frame(PersonID = 4, LastName = 'Núñez', FirstName = 'Josep Lluis', Address = 'Dirección 4', City = 'Barcelona', stringsAsFactors = FALSE) `InsertDB(data.df, "Persons", "test")`
+| `InsertByLoadDataDB` | data.df, db.table, db.name, cushion = 100000, is.pool = FALSE | `InsertByLoadDataDB(data.df, "Persons", "test")`
 | `CreateTempTableDB` | tablename, db.name, fields.df | `CreateTempTableDB("Customers", db.name = "test", fields.df = campos.df)`
 | `CreateTableByQueryDB` | tablename, db.name, query | `CreateTableByQueryDB("Customers", db.name = "test", query = new.table.c)`
 
@@ -69,5 +70,5 @@ CloseConnectionDB()
 ### Important
 ##### V1.0.
 
-Pool environment are available but not testing
-
+1) Pool environment are available but not testing
+2) First step is generate a file like `data/config_db.csv` with your database credentials.
