@@ -11,7 +11,7 @@
 <!-- badges: end -->
 
 # RswissknifeDB
-This package allows you to work with some of common databases like MYSQL or PostgreSQL. Tested databases in this version:
+This package allows you to work with some of the most common databases such as MYSQL or PostgreSQL. Tested databases in this version:
   - MySQL
 
 # Installation
@@ -70,5 +70,5 @@ CloseConnectionDB()
 ### Important
 ##### V1.0.
 
-1) Pool environment are available but not testing
-2) First step is generate a file like `data/config_db.csv` with your database credentials.
+1) Pool environment is available but not tested
+2) First step is to generate a file like `data/config_db.csv` with your database credentials and to load it into the environment.
