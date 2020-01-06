@@ -115,7 +115,7 @@ GenerateSchemaList <- function(db.servers.list, pool.flag) {
     if (isTRUE(pool.flag) & db.servers.list$AVAILABLEPOOL[i] == TRUE) {
       server.pool.flag <- TRUE
       connection.result <- try(DBSwitchTechnology(db.servers.list[i, ], server.pool.flag))
-      cat("Now,", db.servers.list$DB_HOST[i], "the pool environment is available\n")
+      cat("Now,", as.character(db.servers.list$DB_HOST[i]), "the pool environment is available\n")
 
     } else if (isTRUE(pool.flag) & db.servers.list$AVAILABLEPOOL[i] == FALSE) {
       cat("Please, you are selectect a pool connection but server don't allow it.\n",
@@ -128,8 +128,9 @@ GenerateSchemaList <- function(db.servers.list, pool.flag) {
 
     if (!is.null(connection.result)) {
       part.server.schemas.df <- GetSchemaInfo(connection.result, server.pool.flag)
-      part.server.schemas.df$server <- as.character(db.servers.list$DB_HOST)
-      part.server.schemas.df$platform <- as.character(db.servers.list$platform)
+      part.server.schemas.df$server <- as.character(db.servers.list$DB_HOST[i])
+      part.server.schemas.df$platform <- as.character(db.servers.list$platform[i])
+      part.server.schemas.df$type <- as.character(db.servers.list$TYPE[i])
       if (pool.flag == TRUE) {
         list.server.schemas.df <- rbind(list.server.schemas.df, part.server.schemas.df)
       } else {
