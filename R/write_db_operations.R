@@ -126,7 +126,7 @@ InsertByQueryDB <- function(query, db.name, is.pool = FALSE) {
 }
 
 InsertDB <- function(data, db.table, db.name) {
-  query <- CreateInsertHeader(data, db.table)
+  query <- GenerateInsertHeader(data, db.table)
   type.validation <- ValidateInsertColumns(data, db.table, db.name)
   if (type.validation == TRUE) {
     for (i in 1:nrow(data)) {
@@ -139,7 +139,7 @@ InsertDB <- function(data, db.table, db.name) {
       if (i < nrow(data) & i %% 500 != 0) query <- paste(query, ",", sep = "")
       if (i %% 500 == 0) {
         InsertByQueryDB(query, db.name)
-        query <- CreateInsertHeader(data, db.table)
+        query <- GenerateInsertHeader(data, db.table)
       }
       else if (i == nrow(data)) {
         InsertByQueryDB(query, db.name)
