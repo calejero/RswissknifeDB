@@ -5,6 +5,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/calejero/rswissknifedb/badge?s=0bd4ffc58a552d40d86144c31b9f3ce03b48320f)](https://www.codefactor.io/repository/github/calejero/rswissknifedb)
 ![GitHub language count](https://img.shields.io/github/languages/count/calejero/rswissknifedb?style=flat-square)
 ![GitHub All Releases](https://img.shields.io/github/downloads/calejero/rswissknifedb/total)
+![GitHub Release Date](https://img.shields.io/github/release-date/calejero/rswissknifedb)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/calejero/rswissknifedb)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/calejero/rswissknifedb?style=flat-square)
 
