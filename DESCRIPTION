@@ -2,17 +2,18 @@ Package: RswissknifeDB
 Type: Package
 Title: RswissknifeDB Package
 Description: This package allows you to work with some of common databases like MYSQL or PostgreSQL
-Version: 1.0
-Date: 2020-01-06
+Version: 1.1.0
+Date: 2020-01-11
 Maintainer: J A Calejero <jcalejero@gmail.com>
 Authors@R: 
     c(person(given = "Jesús Armand",
              family = "Calejero Román",
              role = c("aut", "cre"),
              email = "jcalejero@gmail.com"))
-License: MIT License 
-Depends: RMariaDB
-Imports: RMariaDB, DBI, glue, rjson
+License: MIT + file LICENSE
+BugReports: https://github.com/calejero/RswissknifeDB/issues
+Depends: RMariaDB, DBI, glue, rjson
+Imports: pool, stringr
 Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
