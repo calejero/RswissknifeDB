@@ -1,2 +1,6 @@
 exportPattern("^[[:alpha:]]+")
-importFrom("utils", "write.table", "DBI", "glue", "rjson", "RMariaDB")
+importFrom("utils", "write.table")
+import("DBI")
+import("glue")
+import("rjson")
+import( "RMariaDB")
