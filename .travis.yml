@@ -9,6 +9,7 @@ jobs:
   include:
   - r: release
     before_cache:
+    - Rscript -e 'remotes::install_github("r-dbi/DBI")'
     - Rscript -e 'remotes::install_github("calejero/rswissknifedb")'
     deploy:
       provider: script
