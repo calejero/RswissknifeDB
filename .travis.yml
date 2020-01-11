@@ -23,3 +23,5 @@ env:
   - TRAVIS_CXXFLAGS="-Wall -Wextra -pedantic -Werror"
   - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
   - _R_CHECK_SYSTEM_CLOCK_=FALSE
+  
+warnings_are_errors: false
