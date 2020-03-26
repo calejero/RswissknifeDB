@@ -8,6 +8,8 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/calejero/rswissknifedb)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/calejero/rswissknifedb)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/calejero/rswissknifedb?style=flat-square)
+[![CodeScene Code Health](https://codescene.io/projects/7576/status-badges/code-health)](https://codescene.io/projects/7576)
+[![CodeScene System Mastery](https://codescene.io/projects/7576/status-badges/system-mastery)](https://codescene.io/projects/7576)
 
 <!-- badges: end -->
 
