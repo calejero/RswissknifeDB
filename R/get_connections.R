@@ -38,6 +38,32 @@ GetMySQLConnection <- function(db.host, db.user, db.pass, db.port, db.default,
   return(db.connection)
 }
 
+#' @name GetPostgreSQLConnection
+#' @title Get PostgreSQL connection
+#'
+#' @description This function establishes a mysql connection.
+#'
+#' @param db.host string identifying the host machine running the MariaDB server.
+#' @param db.user Username
+#' @param db.pass Password .
+#' @param db.port Integer of the tcp/ip port to establish a connection.
+#' @param db.default active database.
+#'
+#' @return None
+#'
+#' @export
+GetPostgreSQLConnection <- function(db.host, db.user, db.pass, db.port = 5432, db.default) {
+  #install.packages("RPostgreSQL")
+  # Leer el driver de PostgreSQL
+  drv <- dbDriver("PostgreSQL")
+
+  # Crear la conexion con la base de datos
+  db.connection <- dbConnect(drv, dbname = db.default,
+                             host = db.host, port = db.port,
+                             user = db.user, password = db.pass)
+  return(db.connection)
+}
+
 GetEnvironmentConnectionsAvailable <- function() {
   list.active.connections.c <- ls(db.conn.env)
   if(length(list.active.connections.c) == 0) {
@@ -104,19 +130,21 @@ CloseConnectionDB <- function() {
 #' @export
 GetDBConnection <- function(db.name, flag.write.operation) {
   available.machines.df <- tryCatch(
-                                    get("schemas.db", db.env), 
+                                    get("schemas.db", db.env),
                                         error = function(e) return ("No DB connections availables for this database.")
                                     )
-  
+
+  names(available.machines.df)[names(available.machines.df) == "database"] <- "Database"
+
   machine.df <- available.machines.df[available.machines.df$Database == db.name,]
-  db.servers.list <- config_db[config_db$DB_HOST %in% machine.df$server & 
+  db.servers.list <- config_db[config_db$DB_HOST %in% machine.df$server &
                                 config_db$platform %in% machine.df$platform, ]
-  
+
   if (nrow(db.servers.list) > 1) {
     type.c <- ifelse(flag.write.operation == TRUE, "master", "slave")
     db.servers.list <- config_db[config_db$TYPE == type.c, ]
-  } 
-  
+  }
+
   con.name <- paste0("con_", as.character(db.servers.list$DB_HOST), "_",
                        as.character(db.servers.list$TYPE), collapse = '')
   return(con.name)
