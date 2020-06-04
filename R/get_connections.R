@@ -55,7 +55,6 @@ GetMySQLConnection <- function(db.host, db.user, db.pass, db.port, db.default,
 GetPostgreSQLConnection <- function(db.host, db.user, db.pass, db.port = 5432, db.default) {
   #install.packages("RPostgreSQL")
   # Leer el driver de PostgreSQL
-  library(RPostgreSQL)
   drv <- dbDriver("PostgreSQL")
 
   # Crear la conexion con la base de datos
