@@ -12,10 +12,10 @@ jobs:
     before_cache:
     - Rscript -e 'remotes::install_github("r-dbi/DBI")'
     - Rscript -e 'remotes::install_github("calejero/rswissknifedb")'
-    deploy:
-      provider: script
-      script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
-      skip_cleanup: true
+    #deploy:
+    #  provider: script
+    #  script: Rscript -e 'pkgdown::deploy_site_github(verbose = TRUE)'
+    #  skip_cleanup: true
 
 env:
   global:
