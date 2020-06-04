@@ -47,7 +47,12 @@ DBSwitchTechnology <- function(server.config, pool.flag) {
                                                              db.pass = server.config$PASS,
                                                              db.port = server.config$PORT,
                                                              db.default = server.config$DEFAULT,
-                                                             db.pool = pool.flag)))
+                                                             db.pool = pool.flag),
+                                  postgresql = GetPostgreSQLConnection(db.host = server.config$DB_HOST,
+                                                                       db.user = server.config$USER,
+                                                                       db.pass = server.config$PASS,
+                                                                       db.port = server.config$PORT,
+                                                                       db.default = server.config$DEFAULT)))
 
   if ('try-error' %in% class(connection.method)){
     cat("Houston, we have a problem:", as.character(server.config$DB_HOST), " Connection is not available.\n")
@@ -87,7 +92,13 @@ GetSchemaInfo <- function(connection.method, pool.flag) {
     pool::poolReturn(con)
     pool::poolClose(connection.method)
   } else {
-    db.server.schemas.con <- dbSendQuery(connection.method, "SHOW DATABASES")
+
+    if (class(connection.method)[1] == "PostgreSQLConnection") {
+      db.server.schemas.con <- dbSendQuery(connection.method, "SELECT datname AS Database FROM pg_database")
+    } else {
+      db.server.schemas.con <- dbSendQuery(connection.method, "SHOW DATABASES")
+    }
+
     db.server.schemas <- dbFetch(db.server.schemas.con)
     dbClearResult(db.server.schemas.con)
   }
